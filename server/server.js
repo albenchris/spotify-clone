@@ -1,7 +1,11 @@
+require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const SpotifyWebApi = require("spotify-web-api-node");
 
 const app = express();
+app.use(cors());
+app.use(express.json());
 
 app.post("/login", (req, res) => {
     const code = req.body.code;
@@ -19,6 +23,10 @@ app.post("/login", (req, res) => {
                 expiresIn: data.body.expires_in
             });
         })
-        .catch(() => res.sendStatus(400));
+        .catch(err => {
+            console.log(err);
+            res.sendStatus(400);
+        });
 });
 
+app.listen(3001);
